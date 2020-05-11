@@ -1,14 +1,18 @@
 class IconEntry {
-  constructor() {
-    this._buffer = null
+  constructor(OSType='', buffer='') {
+    this._buffer = buffer
     this._type = ''
-    this._OSType = ''
+    this._ext = ''
+    this._OSType = OSType
   }
   get buffer() {
     return this._buffer
   }
   get type() {
     return this._type
+  }
+  get ext() {
+    return this._ext
   }
   get OSType() {
     return this._OSType

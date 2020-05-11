@@ -3,11 +3,11 @@ import Decoder from './decoder'
 
 export { default as Encoder } from './encoder'
 export { default as Decoder } from './decoder'
+export { default as IconEntry } from './iconentry'
 
 export const decode = (buffer) => {
   let decoder = new Decoder(buffer)
-  decoder.decode()
-  return decoder._iconEntries
+  return decoder.decode()
 }
 
 export const encode = (buffers) => {

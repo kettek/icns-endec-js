@@ -1,3 +1,4 @@
+import { supportedOSTypes, extensions, pngMagic, jpegMagic } from './common'
 import IconEntry from './iconentry'
 
 /**
@@ -41,29 +42,30 @@ class Decoder {
       // Read 4,4 Length of icon in bytes, including type and length, msb
       iconLength = this._buffer.readUInt32BE(offset)-8, offset += 4
       // Read content 8,(length-8)
-      iconBuffer = Buffer.from(this._buffer.buffer, offset, iconLength),  offset += iconLength
-      // For now, just icp4,icp5,icp6,ic07,ic08,ic09,ic10,ic11,ic12,ic13,ic14, as these are JPEG 2000 or PNG.
-      switch(iconType) {
-        case 'icp4': case 'icp5': case 'icp6':
-        case 'ic07': case 'ic08': case 'ic09': 
-        case 'ic10': case 'ic11': case 'ic12': 
-        case 'ic13': case 'ic14':
-          if (iconBuffer[0] === 0x89 && iconBuffer[1] === 0x50 && iconBuffer[2] === 0x4E && iconBuffer[3] === 0x47 && iconBuffer[4] === 0x0D && iconBuffer[5] === 0x0A && iconBuffer[6] === 0x1A && iconBuffer[7] === 0x0A) {
-            iconEntry._type = 'png'
-          } else {
-            iconEntry._type = 'jp2'
-          }
-          iconEntry._buffer = iconBuffer
-          this._iconEntries.push(iconEntry)
-          break;
-        case 'name':
-        case 'TOC ':
-        case 'icnV':
-        case 'info':
-        default:
-          console.log('skipping', iconType)
-          break;
+      iconBuffer = Buffer.from(this._buffer.buffer, offset, iconLength)
+      if (supportedOSTypes.includes(iconType)) {
+        if (pngMagic.compare(Buffer.from(this._buffer.buffer, offset, pngMagic.length)) === 0) {
+          iconEntry._type = 'PNG'
+        } else if (jpegMagic.compare(Buffer.from(this._buffer.buffer, offset, jpegMagic.length)) === 0) {
+          iconEntry._type = 'JPEG2000'
+        } else {
+          throw `${iconType} must be PNG or JPEG 2000`
+        }
+        iconEntry._ext = extensions[iconEntry._type]
+        iconEntry._buffer = iconBuffer
+        this._iconEntries.push(iconEntry)
+      } else {
+        switch(iconType) {
+          case 'name':
+          case 'TOC ':
+          case 'icnV':
+          case 'info':
+          default:
+            console.log('skipping', iconType)
+            break;
+        }
       }
+      offset += iconLength
     }
     return this._iconEntries
   }
