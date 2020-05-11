@@ -42,7 +42,7 @@ class Decoder {
       iconLength = this._buffer.readUInt32BE(offset)-8, offset += 4
       // Read content 8,(length-8)
       iconBuffer = Buffer.from(this._buffer.buffer, offset, iconLength),  offset += iconLength
-      // For now, just icp4,icp5,icp6,ic07,ic08,ic09,ic10,ic11,ic12,ic13,ic14 as these are JPEG 2000 or PNG.
+      // For now, just icp4,icp5,icp6,ic07,ic08,ic09,ic10,ic11,ic12,ic13,ic14, as these are JPEG 2000 or PNG.
       switch(iconType) {
         case 'icp4': case 'icp5': case 'icp6':
         case 'ic07': case 'ic08': case 'ic09': 
