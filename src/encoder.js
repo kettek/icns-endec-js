@@ -30,11 +30,12 @@ class Encoder {
         throw 'encoder requires IconEntries or conformant objects'
       }
     })
-    for (let iconEntry of iconEntries) {
+
+    // Ensure buffers are in our desired type.
+    for (let iconEntry of this._iconEntries) {
       if (iconEntry.buffer instanceof ArrayBuffer) {
-        iconEntry.buffer = Buffer.from(new Uint8Array(iconEntry.buffer))
-      } else if (iconEntry.buffer instanceof Buffer) {
-      } else {
+        iconEntry._buffer = Buffer.from(new Uint8Array(iconEntry.buffer))
+      } else if (!(iconEntry.buffer instanceof Buffer)) {
         throw 'icon buffer must be Buffer or ArrayBuffer'
       }
     }
