@@ -1,13 +1,17 @@
 class IconEntry {
   constructor() {
-    this._width = -1
-    this._height = -1
+    this._buffer = null
+    this._type = ''
+    this._OSType = ''
   }
-  get width() {
-    return this._width
+  get buffer() {
+    return this._buffer
   }
-  get height() {
-    return this._height
+  get type() {
+    return this._type
+  }
+  get OSType() {
+    return this._OSType
   }
 }
 
