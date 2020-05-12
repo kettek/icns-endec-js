@@ -12,7 +12,7 @@ The OSType must match one of the supported ones on the [Supported OSType Table](
 const fsPromises = require('fs').promises
 const icnsEndec  = require('icns-endec')
 
-(async () => {
+;(async () => {
   // Encode ic07 and ic08 from PNG images.
   let icnsBuffer = icnsEndec.encode([
     {
@@ -37,7 +37,7 @@ The decode function takes a Buffer or an ArrayBuffer that holds the binary data 
 const fsPromises = require('fs').promises
 const icnsEndec  = require('icns-endec')
 
-(async () => {
+;(async () => {
   // Retrieve the icons as an array of IconEntries.
   let icns = icnsEndec.decode(await fsPromises.readFile('myIcon.icns'))
   
